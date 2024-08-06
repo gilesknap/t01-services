@@ -14,7 +14,6 @@ services:
     environment:
       IOCSH_PS1: replace_me >
       IOC_NAME: replace_me
-      IOC_PREFIX: REPLACE_ME
 
     volumes:
       - ../../opi/iocs/replace_me:/epics/opi

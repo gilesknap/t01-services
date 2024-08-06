@@ -10,7 +10,7 @@
 
 # This script must be sourced
 if [ "$0" = "$BASH_SOURCE" ]; then
-    echo "ERROR: Please source this script (source environment.sh)"
+    echo "ERROR: Please source this script (source ./environment.sh)"
     exit 1
 fi
 
@@ -27,6 +27,9 @@ if check_docker; then
 else
     USER_ID=0; USER_GID=0
 fi
+
+# ensure local container users can access X11 server
+xhost +SI:localuser:$(id -un)
 
 # Set up the environment for compose ###########################################
 

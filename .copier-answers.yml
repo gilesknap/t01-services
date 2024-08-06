@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 3.5.0-4-g31b2cb7
+_commit: 3.5.0
 _src_path: ../services-template-compose
 description: t01 IOC Instances and Services
 services: t01
