@@ -19,4 +19,4 @@ entities:
     command: |
       dbpf EXAMPLE:A "2.54"
       dbpf EXAMPLE:B "2.61"
-      dbgf EXAMPLE:IBEK:SUM
+      dbgf EXAMPLE:SUM

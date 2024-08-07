@@ -14,6 +14,11 @@ if [ "$0" = "$BASH_SOURCE" ]; then
     exit 1
 fi
 
+# if there is a docker-compose module then load it
+if [[ $(module avail docker-compose 2>/dev/null) != "" ]] ; then
+    module load docker-compose
+fi
+
 function check_docker {
     # return 0 if docker is detected, or 1 otherwise,
     # cope with the possibility that podman is aliased to docker
