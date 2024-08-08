@@ -27,8 +27,8 @@ services:
         target: /config
 
     profiles:
-      - develop
-      - phoebus
+      - test
+      - dev
 
 configs:
   phoebus_config:

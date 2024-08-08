@@ -2,9 +2,9 @@
 
 services:
 
-  # local pvagw for development ################################################
+  # local pvagw for test/dev  ##################################################
 
-  pvagw-develop: &pvagw
+  pvagw: &pvagw
 
     image: ghcr.io/epics-containers/ec-p4p:4.1.12ec1
 
@@ -48,7 +48,7 @@ services:
     command: -c "pvagw /config/pvagw.config"
 
     profiles:
-      - removed_due_to_networking_issue
+      - removed
 
 configs:
   pvagw_config:

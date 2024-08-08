@@ -8,9 +8,9 @@
 
 services:
 
-  # ca-gateway for development #################################################
+  # ca-gateway for test / dev ##################################################
 
-  ca-gateway-develop: &ca-gateway
+  ca-gateway: &ca-gateway
 
     image: ghcr.io/epics-containers/docker-ca-gateway:2.1.3ec1
 
@@ -33,10 +33,22 @@ services:
       - source: ca-gateway_config
         target: /config
 
-    command: -cip 172.20.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
+    command: -cip 172.255.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
 
     profiles:
-      - develop
+      - test
+      - dev
+
+  # debugging version of gateway container #####################################
+  ca-gateway-debug:
+
+    <<: *ca-gateway
+
+    # this image is not distroless and has network tools installed
+    image: ghcr.io/epics-containers/docker-ca-gateway-debug:2.1.3ec1
+
+    profiles:
+      - debug
 
   # per server ca-gateway for deployment #######################################
   ca-gateway-deploy:

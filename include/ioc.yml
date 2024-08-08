@@ -40,6 +40,10 @@ services:
       - "5064-5065/udp"
       - "5064-5065"
 
+    profiles:
+      - test
+      - deploy
+
   # proxy services that each manage an RTEMS hard IOC ##########################
   rtems_ioc:
     # use an alias to copy all of the linux_ioc spec
