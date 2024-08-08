@@ -12,15 +12,22 @@ entities:
     IOC: "{{ ioc_name | upper }}"
 
   - type: ADSimDetector.simDetector
-    PORT: DET.DET
-    P: BL01T-EA-CAM-01
+    PORT: &PORT DET.DET
+    P: &P BL01T-EA-CAM-01
     R: ":DET:"
 
   - type: ADCore.NDStdArrays
     PORT: DET.ARR
-    P: BL01T-DI-CAM-01
+    # use the alias for the same P as the simDetector
+    P: *P
     R: ":ARR:"
-    NDARRAY_PORT: DET.DET
+    NDARRAY_PORT: *PORT
     TYPE: Int8
     FTVL: CHAR
     NELEMENTS: 1048576
+
+  - type: ADCore.NDProcess
+    PORT: DET.PROC
+    P: BL01T-EA-CAM-01
+    R: ":PROC:"
+    NDARRAY_PORT: DET.DET
