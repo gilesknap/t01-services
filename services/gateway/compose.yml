@@ -34,7 +34,7 @@ services:
       - source: ca-gateway_config
         target: /config
 
-    command: -cip 10.255.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
+    command: -cip 172.20.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
 
     profiles:
       - test
@@ -42,8 +42,6 @@ services:
 
   # debugging version of gateway container #####################################
   ca-gateway-debug:
-
-    container_name: ca-gateway-debug
 
     <<: *ca-gateway
 
@@ -55,8 +53,6 @@ services:
 
   # per server ca-gateway for deployment #######################################
   ca-gateway-deploy:
-
-    container_name: ca-gateway
 
     <<: *ca-gateway
 

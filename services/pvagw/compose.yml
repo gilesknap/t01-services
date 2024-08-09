@@ -5,6 +5,7 @@ services:
   # local pvagw for test/dev  ##################################################
 
   pvagw: &pvagw
+    container_name: pvagw
 
     image: ghcr.io/epics-containers/ec-p4p:4.1.12ec1
 
