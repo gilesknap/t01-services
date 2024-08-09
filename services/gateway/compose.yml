@@ -12,6 +12,8 @@ services:
 
   ca-gateway: &ca-gateway
 
+    container_name: ca-gateway
+
     image: ghcr.io/epics-containers/docker-ca-gateway:2.1.3ec1
 
     expose:
@@ -27,13 +29,12 @@ services:
 
     networks:
       channel_access:
-        ipv4_address: 172.20.255.254
 
     configs:
       - source: ca-gateway_config
         target: /config
 
-    command: -cip 172.255.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
+    command: -cip 10.255.255.255 -pvlist /config/pvlist -access /config/access -log /dev/stdout -debug 1
 
     profiles:
       - test
@@ -41,6 +42,8 @@ services:
 
   # debugging version of gateway container #####################################
   ca-gateway-debug:
+
+    container_name: ca-gateway-debug
 
     <<: *ca-gateway
 
@@ -53,11 +56,12 @@ services:
   # per server ca-gateway for deployment #######################################
   ca-gateway-deploy:
 
+    container_name: ca-gateway
+
     <<: *ca-gateway
 
     ports:
-    # TODO - drop the IP address but also set up pvlist to make sure there
-    # are no loops - I need to look into safe config for per server ca-gateways
+    # TODO - I need to look into safe config for per server ca-gateways
     - 127.0.0.1:5064:5064/udp
     - 127.0.0.1:5064-5065:5064-5065
 

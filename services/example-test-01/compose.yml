@@ -1,6 +1,7 @@
 services:
 
   example-test-01:
+    container_name: example-test-01
 
     extends:
       service: linux_ioc
