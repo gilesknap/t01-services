@@ -1,6 +1,4 @@
 networks:
   channel_access:
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.20.0.0/16"
+    name: "channel_access"
+    external: true

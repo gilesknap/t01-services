@@ -12,15 +12,14 @@
 # or for a multiple server repo:
 #  docker compose --profile deploy -f my_server_01.yml up --detach
 
-# to deploy the IOCs to a workstation for testing and development, use:
-# docker compose --profile develop up --detach
+#
 
 include:
-    # all profiles
+    # test and deploy profiles
     - services/example-test-01/compose.yml
     - services/gateway/compose.yml
 
-    # develop profile only
+    # dev and test profiles
     - services/phoebus/compose.yml
 
     # deploy profile only

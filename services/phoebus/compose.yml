@@ -3,6 +3,7 @@
 
 services:
   phoebus:
+    container_name: phoebus
     image: ghcr.io/epics-containers/ec-phoebus:4.7.3ec2
     environment:
       DISPLAY: $DISPLAY
@@ -27,8 +28,9 @@ services:
         target: /config
 
     profiles:
-      - develop
-      - phoebus
+      - test
+      - dev
+      - debug
 
 configs:
   phoebus_config:

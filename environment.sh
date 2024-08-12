@@ -27,10 +27,17 @@ function check_docker {
     fi
 }
 
+# set user id for the phoebus container for easy X11 forwarding.
 if check_docker; then
     USER_ID=$(id -u); USER_GID=$(id -g)
 else
+    alias docker=podman
     USER_ID=0; USER_GID=0
+fi
+
+# make sure we have a network to share beteen the devcontainer and gateway container
+if ! docker network exists channel_access ; then
+    docker network create --subnet="170.20.0.0/16" channel_access
 fi
 
 # ensure local container users can access X11 server
@@ -40,9 +47,9 @@ xhost +SI:localuser:$(id -un)
 
 # set user id for the phoebus container for easy X11 forwarding.
 export UIDGID=$USER_ID:$USER_GID
-# choose develop profile for docker compose
-export COMPOSE_PROFILES=develop
-# for develop profile our ca-gateway publishes PVS on the loopback interface
+# choose test profile for docker compose
+export COMPOSE_PROFILES=test
+# for test profile our ca-gateway publishes PVS on the loopback interface
 export EPICS_CA_ADDR_LIST=127.0.0.1
 # make a short alias for docker-compose for convenience
 alias ec='docker compose'

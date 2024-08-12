@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: 3.5.0
+_commit: 3.6.0b1
 _src_path: gh:epics-containers/services-template-compose
 description: t01 IOC Instances and Services
 services: t01
