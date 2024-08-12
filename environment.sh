@@ -35,11 +35,6 @@ else
     USER_ID=0; USER_GID=0
 fi
 
-# make sure we have a network to share beteen the devcontainer and gateway container
-if ! docker network inspect channel_access &> /dev/null ; then
-    docker network create --subnet="170.20.0.0/16" channel_access
-fi
-
 # ensure local container users can access X11 server
 xhost +SI:localuser:$(id -un)
 
