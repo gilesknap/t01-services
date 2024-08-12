@@ -36,7 +36,7 @@ else
 fi
 
 # make sure we have a network to share beteen the devcontainer and gateway container
-if ! docker network exists channel_access ; then
+if ! docker network inspect channel_access &> /dev/null ; then
     docker network create --subnet="170.20.0.0/16" channel_access
 fi
 
