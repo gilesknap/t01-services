@@ -1,10 +1,9 @@
 # When deploying IOCs to a server with docker, the choice is:
 #
 # 1. Use host network so their PVs available on the subnet
-# 2. Run a ca-gateway on each server and add all servers to client's
-#    EPICS_CA_ADDR_LIST
+# 2. Run a ca-gateway on each server
 #
-# at present the only available option for podman is to use host network
+# for local testing we also run a ca-gateway and bind it to localhost
 
 services:
 
