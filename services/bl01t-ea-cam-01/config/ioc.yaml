@@ -27,3 +27,6 @@ entities:
     TYPE: Int8
     FTVL: CHAR
     NELEMENTS: 1048576
+
+  - type: epics.StartupCommand
+    command: dbLoadRecords(config/extra.db)
