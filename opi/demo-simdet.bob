@@ -354,7 +354,7 @@
       <name>OpenDisplay</name>
       <actions>
         <action type="open_display">
-          <file>iocs/bl01t-ea-cam-01/index.bob</file>
+          <file>auto-generated/bl01t-ea-cam-01/index.bob</file>
           <macros>
             <P>BL01T-EA-TST-01</P>
             <R>:DET:</R>

@@ -16,7 +16,7 @@ services:
       IOC_NAME: replace_me
 
     volumes:
-      - ../../opi/iocs/replace_me:/epics/opi
+      - ../../opi/auto-generated/replace_me:/epics/opi
 
     configs:
       - source: replace_me_config
