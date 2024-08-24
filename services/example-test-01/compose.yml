@@ -17,7 +17,7 @@ services:
       IOC_NAME: example-test-01
 
     volumes:
-      - ../../opi/iocs/example-test-01:/epics/opi
+      - ../../opi/auto-generated/example-test-01:/epics/opi
 
     configs:
       - source: example-test-01_config
