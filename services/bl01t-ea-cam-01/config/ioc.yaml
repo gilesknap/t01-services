@@ -30,3 +30,6 @@ entities:
     P: BL01T-EA-CAM-01
     CAM: DET.DET # the simDetector PORT from create_ioc
     PORTPREFIX: DET
+
+  - type: epics.StartupCommand
+    command: dbLoadRecords(config/extra.db)
