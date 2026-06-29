@@ -1,0 +1,24 @@
+ioc_name: "{{ _global.get_env('IOC_NAME') }}"
+
+description: A simulated Lakeshore 340 temperature controller
+
+entities:
+  - type: epics.EpicsEnvSet
+    name: EPICS_TZ
+    value: GMT0BST
+
+  - type: epics.EpicsEnvSet
+    name: STREAM_PROTOCOL_PATH
+    value: /epics/runtime/protocol/
+
+  - type: devIocStats.iocAdminSoft
+    IOC: "{{ ioc_name | upper }}"
+
+  - type: asyn.AsynIP
+    name: p1
+    port: 170.200.0.100:5401
+
+  - type: lakeshore340.lakeshore340
+    P: BL01T-EA-TEMP-01
+    PORT: p1
+    name: lakeshore

@@ -1,0 +1,7 @@
+lakeshore340:
+  version: 0.1.1
+  source: github.com/epics-containers/ibek-runtime-streamdevice
+  files:
+    lakeshore340.ibek.support.yaml: sha256:f84041b8a8f26d9a715216b5c0752630b6e1f579be2afd37232c50b6a60d04ac
+    lakeshore340.proto: sha256:4b22b12110211b92c3fa3442aebb8df058cc034e1c7702a5d43acbbb8c04c559
+    lakeshore340.template: sha256:fdca4ba6870bd880a311a0b22ba098d847a48ae3c01d980eebb2cfa9c3dd1745

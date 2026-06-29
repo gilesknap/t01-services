@@ -1,0 +1,509 @@
+# Vendored from github.com/epics-containers/ibek-runtime-streamdevice@0.1.1 — DO NOT EDIT
+################################################################
+#
+# % macro, __doc__, Lakeshore 340 Temperature Controller
+# Notes: The temperatures in Kelvin are archived once every 10 secs.
+#
+# Macros:
+# % macro, P, Prefix for PV name
+# % macro, PORT, Bus/Port Address (eg. ASYN Port).
+# % macro, ADDR, Address on the bus
+# % macro, SCAN, SCAN rate for non-temperature/voltage parameters.
+# % macro, TEMPSCAN, SCAN rate for the temperature/voltage readings
+# % macro, name, Object and gui association name
+# % macro, gda_name, Name in gda interface file (Default = )
+# % macro, gda_desc, Description in gda interface file (Default = )
+# % macro, LOOP, Which heater PID loop to control (Default = 1)
+#
+################################################################
+
+#% gui, $(name=), edm, lakeshore340.edl, lakeshore340=$(P)
+#% gui, $(name=), edmembed, lakeshore340_embed.edl, P=$(P),Q=
+#% gdatag,template,lakeshore340,$(gda_name=),$(gda_desc=)
+# % gdatag,binary,rw,$(gda_name=),DISABLE
+record(bo, "$(P):DISABLE") {
+  field(DESC, "Disable comms")
+  field(PINI, "YES")
+  field(VAL, "0")
+  field(OMSL, "supervisory")
+  field(ZNAM, "Enabled")
+  field(ONAM, "Disabled")
+}
+
+################################################################
+# Read records
+################################################################
+
+# ///
+# /// Read the ID string from the device.
+# ///
+record(stringin, "$(P):ID") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getID $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+# ///
+# /// Read the heater output value.
+# ///
+record(ai, "$(P):HTR") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getHTR $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, 3)
+  field(EGU, "%")
+}
+
+# ///
+# /// Read the setpoint temperature.
+# ///
+record(ai, "$(P):SETP") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getSETP($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, 3)
+  field(EGU, "K")
+}
+
+# ///
+# /// Read the temperature on channel 0 in Kelvin.
+# /// This is archived every 10 seconds.
+# ///
+#% gdatag,pv,ro,$(gda_name=),KRDG0
+#% archiver 10 Monitor
+#% alh
+#% gui, $(name=), sevr
+record(ai, "$(P):KRDG0") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(DESC, "Channel 0 temperature")
+  field(INP, "@lakeshore340.proto getKRDG(0) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "K")
+}
+
+# ///
+# /// Read the temperature on channel 1 in Kelvin.
+# /// This is archived every 10 seconds.
+# ///
+#% gdatag,pv,ro,$(gda_name=),KRDG1
+#% archiver 10 Monitor
+#% alh
+record(ai, "$(P):KRDG1") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(DESC, "Channel 1 temperature")
+  field(INP, "@lakeshore340.proto getKRDG(1) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "K")
+}
+
+# ///
+# /// Read the temperature on channel 2 in Kelvin.
+# /// This is archived every 10 seconds.
+# ///
+#% gdatag,pv,ro,$(gda_name=),KRDG2
+#% archiver 10 Monitor
+#% alh
+record(ai, "$(P):KRDG2") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(DESC, "Channel 2 temperature")
+  field(INP, "@lakeshore340.proto getKRDG(2) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "K")
+}
+
+# ///
+# /// Read the temperature on channel 3 in Kelvin.
+# /// This is archived every 10 seconds.
+# ///
+#% gdatag,pv,ro,$(gda_name=),KRDG3
+#% archiver 10 Monitor
+#% alh
+record(ai, "$(P):KRDG3") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(DESC, "Channel 3 temperature")
+  field(INP, "@lakeshore340.proto getKRDG(3) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "K")
+}
+
+# ///
+# /// Read the raw voltage on channel 0.
+# ///
+record(ai, "$(P):SRDG0") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getSRDG(0) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "V")
+}
+
+# ///
+# /// Read the raw voltage on channel 1.
+# ///
+record(ai, "$(P):SRDG1") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getSRDG(1) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "V")
+}
+
+# ///
+# /// Read the raw voltage on channel 2.
+# ///
+record(ai, "$(P):SRDG2") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getSRDG(2) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "V")
+}
+
+# ///
+# /// Read the raw voltage on channel 3.
+# ///
+record(ai, "$(P):SRDG3") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getSRDG(3) $(PORT) $(ADDR)")
+  field(SCAN, "$(TEMPSCAN) second")
+  field(PREC, 3)
+  field(EGU, "V")
+}
+
+# ///
+# /// Read the range parameter (the heater output power range).
+# ///
+record(ai, "$(P):RANGE") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getRANGE $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+# ///
+# /// Read the ramp paremeter.
+# ///
+record(ai, "$(P):RAMP") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getRAMP($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, 3)
+  field(EGU, "K/min")
+}
+
+# ///
+# /// Read the ramp status parameter.
+# .
+# /// 0=off
+# /// 1=on
+# ///
+record(ai, "$(P):RAMPST") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getRAMPSTATUS($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+# ///
+# /// Read the manual output parameter for the currently selected loop.
+# ///
+record(ai, "$(P):MOUT") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getMOUT($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+# ///
+# /// Read the PID P parameter for the currently selected loop.
+# ///
+record(ai, "$(P):P") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getP($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, "1")
+  field(LOPR, "0")
+  field(HOPR, "1000")
+}
+
+# ///
+# /// Read the PID I parameter for the currently selected loop.
+# ///
+record(ai, "$(P):I") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getI($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, "1")
+}
+
+# ///
+# /// Read the PID D parameter for the currently selected loop.
+# ///
+record(ai, "$(P):D") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getD($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(PREC, "0")
+}
+
+# ///
+# /// Read the mode parameter for the currently selected loop.
+# ///
+record(ai, "$(P):CMODE") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getCMODE($(P)) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+
+# ///
+# /// Read the control loop auto tuning status
+# ///
+record(ai, "$(P):TUNEST") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getTUNEST $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+}
+
+# ///
+# /// Read the analogue output 1
+# ///
+record(ai, "$(P):AOUT1") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getAOUT(1) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(EGU, "%")
+}
+
+# ///
+# /// Read the analogue output 2
+# ///
+record(ai, "$(P):AOUT2") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(INP, "@lakeshore340.proto getAOUT(2) $(PORT) $(ADDR)")
+  field(SCAN, "$(SCAN) second")
+  field(EGU, "%")
+}
+
+
+################################################################
+# Write records
+################################################################
+
+# ///
+# /// Set the setpoint temperature.
+# ///
+#% gdatag,pv,rw,$(gda_name=),SETP_S
+#% autosave 1 VAL
+record(ao, "$(P):SETP_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(DESC, "Setpoint temperature")
+  field(OUT, "@lakeshore340.proto setSETP($(P)) $(PORT) $(ADDR)")
+  field(PREC, 3)
+  field(FLNK, "$(P):SETP")
+  field(EGU, "K")
+}
+
+# ///
+# /// Set the range parameter.
+# .
+# /// Possible values are: 0, 1, 2, 3, 4, 5
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):RANGE_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setRANGE $(PORT) $(ADDR)")
+  field(FLNK, "$(P):RANGE")
+}
+
+# ///
+# /// Set the ramp rate parameter.
+# .
+# /// This is the desired temperate increase/decrease rate
+# /// per second when heating/cooling.
+# .
+# /// The ramp and ramp status parameters are actually one command
+# /// for the lakeshore 340. Therefore one must pass into this
+# /// record the existing/desired ramp status, as well as the
+# /// desired ramp. This is done automatically by reading the
+# /// PV which holds the current ramp status.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):RAMP_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setRAMP($(P)) $(PORT) $(ADDR)")
+  field(PREC, 3)
+  field(FLNK, "$(P):RAMP")
+  field(EGU, "K/min")
+}
+
+# ///
+# /// Set the ramp status parameter.
+# .
+# /// 0=off
+# /// 1=on
+# .
+# /// The ramp and ramp status parameters are actually one command
+# /// for the lakeshore 340. Therefore one must pass into this
+# /// record the existing/desired ramp, as well as the
+# /// desired ramp status. This is done automatically by reading the
+# /// PV which holds the current ramp value.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):RAMPST_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setRAMPSTATUS($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):RAMPST")
+}
+
+# ///
+# /// Set the manual output value on the currently selected loop.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):MOUT_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setMOUT($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):MOUT")
+}
+
+# Extracts from p. 6-4 (70th page)
+#
+# Lakeshore 340 Manual
+# Rev 3-3 14 May 2009
+#
+# 6.6.1 Proportional (P)
+#
+# The proportional parameter (also called gain) is the P part of the
+# PID control equation.  It has a range of 0 to 1000 with a resolution
+# of 0.1. Enter a value greater than zero for P to use closed loop
+# control.
+# ///
+# /// Set the PID P parameter on the currently selected loop.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):P_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setP($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):P")
+  field(PREC, "1")
+  field(LOPR, "0")
+  field(HOPR, "1000")
+}
+
+# 6.6.2 Integral (I)
+#
+# The integral parameter (also called reset) is the I part of the PID
+# control equation.  It has a range of 0 to 1000 with a resolution of
+# 0.1. Setting I to zero turns the reset function off.  The I setting
+# is related to seconds by:
+#
+# Isetting=1000/Iseconds
+#
+# ///
+# /// Set the PID I parameter on the currently selected loop.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):I_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setI($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):I")
+  field(PREC, "1")
+  field(LOPR, "0")
+  field(HOPR, "1000")
+}
+
+# 6.6.3 Derivative (D)
+#
+# The derivative parameter (sometimes called rate) is the D part of
+# the PID control equation.  The range of the D setting is 0 to 1000
+# seconds with a resolution of 1 second.  Setting D to zero turns the
+# derivative function off.
+# ///
+# /// Set the PID D parameter on the currently selected loop.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):D_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setD($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):D")
+  field(PREC, "0")
+  field(LOPR, "0")
+  field(HOPR, "1000")
+}
+
+# ///
+# /// Set the mode value on the currently selected loop.
+# ///
+#% autosave 1 VAL
+record(ao, "$(P):CMODE_S") {
+  field(DTYP, "stream")
+  field(SDIS, "$(P):DISABLE")
+  field(OUT, "@lakeshore340.proto setCMODE($(P)) $(PORT) $(ADDR)")
+  field(FLNK, "$(P):CMODE")
+}
+
+# ///
+# /// Loop selection menu
+# ///
+#% autosave 1 VAL
+record(mbbo, "$(P):LOOP") {
+  field(SDIS, "$(P):DISABLE")
+  field(ZRVL, "1")
+  field(ZRST, "Loop 1")
+  field(ONVL, "2")
+  field(ONST, "Loop 2")
+}
+
+# ///
+# /// Loop initialisation record
+# /// (Yes, this is a hack.)
+# ///
+record(calcout, "$(P):LINIT") {
+    field(OUT, "$(P):LOOP PP")
+    field(PINI, "YES")
+    field(CALC, "$(LOOP=1)-1")
+}
+
+# ///
+# /// Generic Asyn record for reading parameters.
+# ///
+record(asyn,"$(P):ASYN")
+{
+    field(DTYP,"asynRecordDevice")
+    field(PORT,"$(PORT)")
+    field(ADDR,"$(ADDR)")
+    field(OMAX,"1024")
+    field(IMAX,"1024")
+}
+

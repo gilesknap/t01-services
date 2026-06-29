@@ -1,0 +1,38 @@
+services:
+  bl01t-ea-temp-01:
+    extends:
+      service: linux_ioc
+      file: ../../include/ioc.yml
+
+    image: ghcr.io/epics-containers/ioc-streamdevice-runtime:2.8.26ec1
+
+    labels:
+      version: 0.1.0
+
+    environment:
+      IOCSH_PS1: bl01t-ea-temp-01 >
+      IOC_NAME: bl01t-ea-temp-01
+
+    volumes:
+      - ../../opi/auto-generated/bl01t-ea-temp-01:/epics/opi
+
+    configs:
+      - source: bl01t-ea-temp-01_config
+        target: epics/ioc/config
+  lakeshore-sim:
+    image: python:3-slim
+    command: python -u /sim/lakeshore340_sim.py 5401
+    volumes:
+      - ./lakeshore340_sim.py:/sim/lakeshore340_sim.py:ro
+    security_opt:
+      - label=disable
+    networks:
+      channel_access:
+        ipv4_address: 170.200.0.100
+
+configs:
+  bl01t-ea-temp-01_config:
+    file: ./config
+
+include:
+  - path: ../../include/networks.yml
